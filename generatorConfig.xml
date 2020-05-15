@@ -1,0 +1,33 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    
+    <classPathEntry location="/Users/sulinwai/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/42.2.12/1ed5b5f16a67f312a50d420e8bcb7d30b40b033d/postgresql-42.2.12.jar"/>
+    
+    <context id="user" targetRuntime="MyBatis3">
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="org.postgresql.Driver" connectionURL="jdbc:postgresql://127.0.0.1:5432/test" userId="postgres" password="1234"></jdbcConnection>
+
+
+        <javaModelGenerator targetPackage="com.slw.my_user.model" targetProject="/Users/sulinwai/Downloads/my_user/src/main/java"></javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mappers.auto" targetProject="/Users/sulinwai/Downloads/my_user/src/main/resources"></sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.slw.my_user.dao" targetProject="/Users/sulinwai/Downloads/my_user/src/main/java"></javaClientGenerator>
+
+        <table schema="s_user" tableName="t_person" domainObjectName="User">
+<!--            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
+        </table>
+        <table tableName="t_relationship" domainObjectName="Relationship">
+
+        </table>
+    </context>
+
+
+</generatorConfiguration>
