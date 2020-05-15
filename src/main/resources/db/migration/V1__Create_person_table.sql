@@ -14,9 +14,9 @@ create table s_user.t_relationship(
     relationship_type int not null,
     person_one int not null ,
     person_two int not null ,
-    create_time date not null ,
-    expire_time date not null ,
-    delete_time date,
+    create_time timestamp not null ,
+    expire_time timestamp not null ,
+    delete_time timestamp,
     valid boolean not null ,
     operator int not null
 )

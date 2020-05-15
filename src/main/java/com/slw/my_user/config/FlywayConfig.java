@@ -41,7 +41,7 @@ public class FlywayConfig {
         try {
             FluentConfiguration configuration = getFlywayConfiguration();
             Flyway flyway = configuration.load();
-            flyway.clean();
+//            flyway.clean();
             flyway.migrate();
             logger.info(" flyway 升级数据库哦 ! ");
         } catch (FlywayException e) {

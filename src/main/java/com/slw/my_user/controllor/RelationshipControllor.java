@@ -4,10 +4,10 @@ import com.slw.my_user.model.Relationship;
 import com.slw.my_user.service.RelationshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +18,8 @@ public class RelationshipControllor {
     RelationshipService relationshipService;
 
     @PostMapping("/relationship")
-    public List<Relationship> addOneRelationship(@RequestParam int id, @RequestParam int relationshipType, @RequestParam int personOne, @RequestParam int personTwo, @RequestParam Date createTime, @RequestParam Date expireTime, @RequestParam Date deleteTime, @RequestParam boolean valid, @RequestParam int operator){
-        boolean b = relationshipService.addOneRelationship(id, relationshipType, personOne, personTwo, createTime, expireTime, deleteTime, valid, operator);
+    public List<Relationship> addOneRelationship(@RequestParam int id, @RequestParam int relationshipType, @RequestParam int personOne, @RequestParam int personTwo, @RequestParam boolean valid, @RequestParam int operator){
+        boolean b = relationshipService.addOneRelationship(id, relationshipType, personOne, personTwo, new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()  ), null, valid, operator);
         if (b==true){
             return relationshipService.selectOneRelationshipById(id);
         }

@@ -24,7 +24,7 @@
         <table schema="s_user" tableName="t_person" domainObjectName="User">
 <!--            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
         </table>
-        <table tableName="t_relationship" domainObjectName="Relationship">
+        <table schema="s_user" tableName="t_relationship" domainObjectName="Relationship">
 
         </table>
     </context>
