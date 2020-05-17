@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,9 +15,16 @@ public class RelationshipService {
     @Autowired
     RelationshipMapper relationshipMapper;
 
-    public boolean addOneRelationship(int id, int relationshipType, int personOne, int personTwo, Timestamp createDate, Timestamp expireDate, Timestamp deleteDate, boolean valid, int operator){
-        Relationship relationship = new Relationship(id,relationshipType,personOne,personTwo,createDate,expireDate,deleteDate,valid,operator);
-        int i = relationshipMapper.insertSelective(relationship);
+    public boolean addOneRelationship(int relationshipType, int personOne, int personTwo, Timestamp createDate, Timestamp expireDate, Timestamp deleteDate, boolean valid, int operator){
+        Relationship relationship = new Relationship();
+        relationship.setPersonOne(personOne);
+        relationship.setPersonTwo(personTwo);
+        relationship.setCreateTime(createDate);
+        relationship.setExpireTime(expireDate);
+        relationship.setDeleteTime(deleteDate);
+        relationship.setValid(valid);
+        relationship.setOperator(operator);
+        int i = relationshipMapper.insert(relationship);
         if (i>0) {
             return true;
         }

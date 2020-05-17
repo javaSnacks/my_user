@@ -4,9 +4,10 @@ plugins {
 	id 'java'
 }
 
+apply plugin : 'maven'
 
 group = 'com.slw'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -16,6 +17,7 @@ configurations {
 }
 
 repositories {
+	mavenLocal()
 	maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
 	mavenCentral()
 }

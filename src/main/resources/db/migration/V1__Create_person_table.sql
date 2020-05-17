@@ -2,21 +2,20 @@
 SET search_path TO s_user;
 
 create table s_user.t_person (
-    id int not null,
+    id int not null primary key ,
     name varchar(20) not null,
     phone varchar(11),
-    relationship_id int[],
-    primary key (id)
+    relationship_id int[]
 );
 
 create table s_user.t_relationship(
-    id int not null,
+    id int not null primary key ,
     relationship_type int not null,
-    person_one int not null ,
-    person_two int not null ,
+    person_one int not null references s_user.t_person(id),
+    person_two int not null references s_user.t_person(id),
     create_time timestamp not null ,
     expire_time timestamp not null ,
     delete_time timestamp,
     valid boolean not null ,
-    operator int not null
+    operator int not null references s_user.t_person(id)
 )

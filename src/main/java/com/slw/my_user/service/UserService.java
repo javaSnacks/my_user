@@ -15,12 +15,10 @@ public class UserService {
     UserMapper userMapper;
 
 
-    public boolean addOneUser(int id,String name,String phone,int relationshipId){
+    public boolean addOneUser(String name,String phone){
         User user = new User();
-        user.setId(id);
         user.setName(name);
         user.setPhone(phone);
-        user.setRelationshipId(relationshipId);
         int i = userMapper.insertSelective(user);
         if(i>0){
             return true;

@@ -1,13 +1,13 @@
 package com.slw.my_user.controllor;
 
 import com.slw.my_user.model.Relationship;
+import com.slw.my_user.model.request.AddRelationshipRequest;
 import com.slw.my_user.service.RelationshipService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +18,24 @@ public class RelationshipControllor {
     RelationshipService relationshipService;
 
     @PostMapping("/relationship")
-    public List<Relationship> addOneRelationship(@RequestParam int id, @RequestParam int relationshipType, @RequestParam int personOne, @RequestParam int personTwo, @RequestParam boolean valid, @RequestParam int operator){
-        boolean b = relationshipService.addOneRelationship(id, relationshipType, personOne, personTwo, new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()  ), null, valid, operator);
+    public List<Relationship> addOneRelationship(@RequestBody AddRelationshipRequest addRelationshipRequest){
+        Calendar curr = Calendar.getInstance();
+        curr.set(Calendar.MONTH,curr.get(Calendar.MONTH)+1);
+        Date date=curr.getTime();
+        boolean b = relationshipService.addOneRelationship(addRelationshipRequest.getRelationshipType(), addRelationshipRequest.getPersonOne(), addRelationshipRequest.getPersonTwo(), new Timestamp(new Date().getTime()), new Timestamp(date.getTime()), null, addRelationshipRequest.isValid(), addRelationshipRequest.getOperator());
+//        List<Relationship> relationships = relationshipService.selectOneRelationshipById();
+//        System.out.println(RelationshipTypeEnum.fromIndex(relationships.get(0).getId()));
         if (b==true){
-            return relationshipService.selectOneRelationshipById(id);
+//            return relationships;
         }
         return null;
+    }
+
+
+    @GetMapping("/relationship/{id}")
+    public List<Relationship> getOneRelationship(@PathVariable int id){
+        List<Relationship> relationships = relationshipService.selectOneRelationshipById(id);
+        return relationships;
     }
 
 }
