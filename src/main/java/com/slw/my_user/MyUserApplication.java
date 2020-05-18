@@ -14,8 +14,9 @@ import org.springframework.context.annotation.ComponentScan;
 public class MyUserApplication {
 
 	public static void main(String[] args) {
-        System.out.println(2);
+        System.out.println(1);
 		SpringApplication.run(MyUserApplication.class, args);
+        System.out.println(3);
 	}
 
 }
