@@ -6,6 +6,8 @@ import com.slw.my_user.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -15,15 +17,12 @@ public class UserService {
     UserMapper userMapper;
 
 
-    public boolean addOneUser(String name,String phone){
+    public int addOneUser(String name,String phone){
         User user = new User();
         user.setName(name);
         user.setPhone(phone);
-        int i = userMapper.insertSelective(user);
-        if(i>0){
-            return true;
-        }
-        return false;
+        userMapper.insert(user);
+        return user.getId();
     }
 
     public List<User> selectAllUser(){
@@ -45,5 +44,28 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public boolean insertOneRelationshipRecord(int personId,int relationshipRecord){
+        User user = new User();
+        user.setId(personId);
+        Integer[] integers = selectOneRelationshipRecord(personId);
+        List<Integer> list = new ArrayList<>();
+        if (integers!=null){
+            list = new ArrayList<>(Arrays.asList(integers));
+        }else{
+            integers = new Integer[1];
+        }
+        list.add(relationshipRecord);
+        Integer[] array = list.toArray(integers);
+        user.setRelationshipId(array);
+        int i = userMapper.updateByPrimaryKeySelective(user);
+        return i>0?true:false;
+    }
+
+    public Integer[] selectOneRelationshipRecord(int personId){
+        User user = userMapper.selectByPrimaryKey(personId);
+        Integer[] relationshipId = user.getRelationshipId();
+        return relationshipId;
     }
 }

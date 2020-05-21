@@ -1,5 +1,6 @@
 package com.slw.my_user.controllor;
 
+import com.slw.my_user.model.Relationship;
 import com.slw.my_user.model.User;
 import com.slw.my_user.model.request.AddUserRelationshipRequest;
 import com.slw.my_user.service.UserService;
@@ -17,8 +18,8 @@ public class UserControllor {
 
     @PostMapping
     public String addOneUser(@RequestBody AddUserRelationshipRequest addUserRelationshipRequest){
-        boolean b = userService.addOneUser(addUserRelationshipRequest.getName(),addUserRelationshipRequest.getPhone());
-        if (b==true){
+        int userId = userService.addOneUser(addUserRelationshipRequest.getName(),addUserRelationshipRequest.getPhone());
+        if (userId>0){
             return "success";
         }
         return "false";
@@ -44,6 +45,12 @@ public class UserControllor {
     public List<User> selectAllUser(){
         List<User> list = userService.selectAllUser();
         return list;
+    }
+
+    @GetMapping("/relationship/{id}")
+    public Integer[] selectOneUserRelationship(@PathVariable int id){
+        Integer[] relationshipRecord = userService.selectOneRelationshipRecord(id);
+        return relationshipRecord;
     }
 
 }

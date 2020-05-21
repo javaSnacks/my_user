@@ -5,7 +5,8 @@ create table s_user.t_person (
     id serial primary key  ,
     name varchar(20) not null,
     phone varchar(11),
-    relationship_id int[]
+    relationship_id integer array,
+    isvaild boolean not null default true
 );
 
 create table s_user.t_relationship(

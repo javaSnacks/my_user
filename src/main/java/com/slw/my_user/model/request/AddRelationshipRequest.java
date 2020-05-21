@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class AddRelationshipRequest {
-    int id;
-
     int relationshipType;
 
     int personOne;
 
     int personTwo;
+
+    int expiration;
 
     boolean valid;
 

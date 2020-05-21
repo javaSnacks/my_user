@@ -19,7 +19,6 @@ configurations {
 repositories {
 	mavenLocal()
 	maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
-	mavenCentral()
 }
 
 ext {
@@ -27,6 +26,9 @@ ext {
 }
 
 dependencies {
+//	compile ('com.slw:utils:0.0.1-SNAPSHOT'){
+//		exclude group: 'org.mybatis.generator'
+//	}
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core:6.3.3'

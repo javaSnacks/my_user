@@ -4,8 +4,8 @@
 
 <generatorConfiguration>
     
-    <classPathEntry location="/home/susu/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/42.2.12/1ed5b5f16a67f312a50d420e8bcb7d30b40b033d/postgresql-42.2.12.jar"/>
-<!--    <classPathEntry location="/Users/sulinwai/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/42.2.12/1ed5b5f16a67f312a50d420e8bcb7d30b40b033d/postgresql-42.2.12.jar"/>-->
+<!--    <classPathEntry location="/home/susu/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/42.2.12/1ed5b5f16a67f312a50d420e8bcb7d30b40b033d/postgresql-42.2.12.jar"/>-->
+    <classPathEntry location="/Users/sulinwai/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/42.2.12/1ed5b5f16a67f312a50d420e8bcb7d30b40b033d/postgresql-42.2.12.jar"/>
 
     <context id="user" targetRuntime="MyBatis3">
 
@@ -19,6 +19,8 @@
 
         </jdbcConnection>
 
+<!--        <javaTypeResolver type="com.slw.my_user.dao.typeHandler.IntegerArrayTypeHandler">-->
+<!--        </javaTypeResolver>-->
 
         <javaModelGenerator targetPackage="com.slw.my_user.model" targetProject="./src/main/java"></javaModelGenerator>
 
@@ -28,6 +30,7 @@
 
         <table schema="s_user" tableName="t_person" domainObjectName="User">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+            <columnOverride column="relationship_id" jdbcType="ARRAY" javaType="Integer[]" typeHandler="com.slw.my_user.dao.typeHandler.IntegerArrayTypeHandler"/>
         </table>
         <table schema="s_user" tableName="t_relationship" domainObjectName="Relationship">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
