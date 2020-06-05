@@ -22,7 +22,9 @@
 <!--        <javaTypeResolver type="com.slw.my_user.dao.typeHandler.IntegerArrayTypeHandler">-->
 <!--        </javaTypeResolver>-->
 
-        <javaModelGenerator targetPackage="com.slw.my_user.model" targetProject="./src/main/java"></javaModelGenerator>
+        <javaModelGenerator targetPackage="com.slw.my_user.model" targetProject="./src/main/java">
+            <property name="constructorBased" value="true"/>
+        </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="mappers.auto" targetProject="./src/main/resources"></sqlMapGenerator>
 
@@ -33,6 +35,12 @@
             <columnOverride column="relationship_id" jdbcType="ARRAY" javaType="Integer[]" typeHandler="com.slw.my_user.dao.typeHandler.IntegerArrayTypeHandler"/>
         </table>
         <table schema="s_user" tableName="t_relationship" domainObjectName="Relationship">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table schema="s_user" tableName="t_goods" domainObjectName="Goods">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table schema="s_user" tableName="t_goods_history" domainObjectName="GoodsHistory">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
     </context>

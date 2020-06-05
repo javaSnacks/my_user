@@ -6,6 +6,7 @@ import com.slw.my_user.service.RelationshipService;
 import com.slw.my_user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

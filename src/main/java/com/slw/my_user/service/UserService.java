@@ -1,5 +1,6 @@
 package com.slw.my_user.service;
 
+import cn.xinzhili.xutils.core.http.Response;
 import com.slw.my_user.dao.UserMapper;
 import com.slw.my_user.model.User;
 import com.slw.my_user.model.UserExample;
@@ -17,12 +18,13 @@ public class UserService {
     UserMapper userMapper;
 
 
-    public int addOneUser(String name,String phone){
+    public Response addOneUser(String name, String phone){
         User user = new User();
         user.setName(name);
         user.setPhone(phone);
+        user.setValid(1);
         userMapper.insert(user);
-        return user.getId();
+        return Response.instanceSuccess();
     }
 
     public List<User> selectAllUser(){
@@ -30,6 +32,7 @@ public class UserService {
         userExample.or().getAllCriteria();
         List<User> list = userMapper.selectByExample(userExample);
         return list;
+
     }
 
     public User selectOneUserById(int id){

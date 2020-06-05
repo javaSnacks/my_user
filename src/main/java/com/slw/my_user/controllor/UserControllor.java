@@ -1,5 +1,6 @@
 package com.slw.my_user.controllor;
 
+import cn.xinzhili.xutils.core.http.Response;
 import com.slw.my_user.model.Relationship;
 import com.slw.my_user.model.User;
 import com.slw.my_user.model.request.AddUserRelationshipRequest;
@@ -17,40 +18,37 @@ public class UserControllor {
     UserService userService;
 
     @PostMapping
-    public String addOneUser(@RequestBody AddUserRelationshipRequest addUserRelationshipRequest){
-        int userId = userService.addOneUser(addUserRelationshipRequest.getName(),addUserRelationshipRequest.getPhone());
-        if (userId>0){
-            return "success";
-        }
-        return "false";
+    public Response addOneUser(@RequestBody AddUserRelationshipRequest addUserRelationshipRequest){
+        Response response = userService.addOneUser(addUserRelationshipRequest.getName(), addUserRelationshipRequest.getPhone());
+        return response;
     }
 
     @GetMapping("/{id}")
-    public User selectOneUserById(@PathVariable int id){
+    public Response<User> selectOneUserById(@PathVariable int id){
         User user = userService.selectOneUserById(id);
-        return user;
+        return Response.instanceSuccess(user);
     }
 
 
     @DeleteMapping("/{id}")
-    public String deleteOneUserById(@PathVariable int id){
+    public Response deleteOneUserById(@PathVariable int id){
         boolean b = userService.deleteOneUserById(id);
         if (b){
-            return "success";
+            return Response.instanceSuccess();
         }
-        return "false";
+        return Response.instanceFail();
     }
 
     @GetMapping
-    public List<User> selectAllUser(){
+    public Response<List<User>> selectAllUser(){
         List<User> list = userService.selectAllUser();
-        return list;
+        return Response.instanceSuccess(list);
     }
 
     @GetMapping("/relationship/{id}")
-    public Integer[] selectOneUserRelationship(@PathVariable int id){
+    public Response<Integer[]> selectOneUserRelationship(@PathVariable int id){
         Integer[] relationshipRecord = userService.selectOneRelationshipRecord(id);
-        return relationshipRecord;
+        return Response.instanceSuccess(relationshipRecord);
     }
 
 }

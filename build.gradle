@@ -1,14 +1,15 @@
 plugins {
 	id 'org.springframework.boot' version '2.2.7.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
+//	id 'java'
 }
 
+apply plugin: 'cn.xinzhili.app.autobuild'
 apply plugin : 'maven'
 
-group = 'com.slw'
-version = '0.0.1'
-sourceCompatibility = '1.8'
+//group = 'com.slw'
+//version = '0.0.1'
+//sourceCompatibility = '1.8'
 
 configurations {
 	compileOnly {
@@ -16,19 +17,12 @@ configurations {
 	}
 }
 
-repositories {
-	mavenLocal()
-	maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
-}
 
 ext {
 	set('springCloudVersion', "Hoxton.SR4")
 }
 
 dependencies {
-//	compile ('com.slw:utils:0.0.1-SNAPSHOT'){
-//		exclude group: 'org.mybatis.generator'
-//	}
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core:6.3.3'
@@ -40,8 +34,48 @@ dependencies {
 	implementation group: 'org.mybatis.generator', name: 'mybatis-generator-core', version:'1.3.5'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation (
+			'org.springframework.restdocs:spring-restdocs-core:1.1.2.RELEASE',
+			'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
+	)
+	ga(
+			"cn.xinzhili:x-utils-core"
+	)
+
+}
+
+allprojects {
+	xzlext {
+		channels { // 以下各个channel 的命名可以随意根据个人的需求，直接编写，只是注意一点：
+			// 会有一个同名的和 dependencies - implementation 的配置生成可用（见 dependencies）
+
+			master {
+				group = "cn.xinzhili"
+				gitBranches = ["local", "daqiang_dev"]
+			}
+
+			local {
+				group = "cn.xinzhili"
+				gitBranches = ["local", "daqiang_dev"]
+			}
+			dev {
+				group = "cn.xinzhili"
+				gitBranches = ["dev", "zxz-dev"]
+			}
+			test {
+				group = "cn.xinzhili"
+				gitBranches = ["test"]
+			}
+			prod {
+				group = "cn.xinzhili"
+				gitBranches = ["master"]
+			}
+//        daqiangDev {
+//            url = "http://api.daqiang.me/v0"
+//            gitBranches = ["daqiang_dev"] // gitBranches 的设置要保证，永远在最后，以保证其他属性设置可用
+//        }
+		}
 	}
 }
 

@@ -5,9 +5,8 @@ import com.slw.my_user.model.Relationship;
 import com.slw.my_user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 @Service
 public class RelationshipService {
@@ -33,11 +32,10 @@ public class RelationshipService {
         relationship.setPersonOne(personOne);
         relationship.setPersonTwo(personTwo);
         relationship.setRelationshipType(relationshipType);
-        relationship.setCreateTime(new Timestamp(new Date().getTime()));
-        Calendar current = Calendar.getInstance();
-        current.set(Calendar.DAY_OF_YEAR,current.get(Calendar.DAY_OF_YEAR)+expiration);
-        relationship.setExpireTime(current.getTime());
-        relationship.setValid(isValid);
+        relationship.setCreateTime(ZonedDateTime.now().toEpochSecond());
+        ZonedDateTime expiredTime = ZonedDateTime.now().plusYears(1);
+        relationship.setExpireTime(expiredTime.toEpochSecond());
+        relationship.setValid(1);
         relationship.setOperator(operator);
         relationshipMapper.insertSelective(relationship);
         return relationship.getId();
