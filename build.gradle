@@ -40,7 +40,9 @@ dependencies {
 			'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
 	)
 	ga(
-			"cn.xinzhili:x-utils-core"
+			"cn.xinzhili:x-utils-core",
+			'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.5',
+//			'org.springframework.boot:spring-boot-starter-data-redis'
 	)
 
 }

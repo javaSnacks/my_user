@@ -1,10 +1,15 @@
 package com.slw.my_user.service;
 
 import cn.xinzhili.xutils.core.http.Response;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.slw.my_user.dao.UserMapper;
 import com.slw.my_user.model.User;
 import com.slw.my_user.model.UserExample;
+import com.slw.my_user.model.response.SelectUserByPageHelperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,6 +38,18 @@ public class UserService {
         List<User> list = userMapper.selectByExample(userExample);
         return list;
 
+    }
+
+    public SelectUserByPageHelperResponse selectAllUserByPage(int pageNum, int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        UserExample userExample = new UserExample();
+        userExample.or().getAllCriteria();
+        List<User> list = userMapper.selectByExample(userExample);
+        PageInfo pageInfo = new PageInfo<>(list);
+        SelectUserByPageHelperResponse response = new SelectUserByPageHelperResponse();
+        response.setNums(pageInfo.getTotal());
+        response.setList(list);
+        return response;
     }
 
     public User selectOneUserById(int id){

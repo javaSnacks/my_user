@@ -1,17 +1,24 @@
 package com.slw.my_user.service;
 
+import cn.xinzhili.xutils.core.FailureException;
 import com.slw.my_user.dao.GoodsMapper;
 import com.slw.my_user.model.Goods;
 import com.slw.my_user.model.GoodsExample;
-import com.slw.my_user.model.enums.SqlStatus;
+import com.slw.my_user.model.enums.SqlStatusEnum;
+import com.slw.my_user.model.request.AddGoodsRequest;
 import com.slw.my_user.model.request.UpdateOneGoodsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Objects;
+
+import static com.slw.my_user.error.GoodsErrorCode.*;
 
 @Service
 public class GoodsService {
@@ -23,22 +30,25 @@ public class GoodsService {
     private GoodsHistoryService goodsHistoryService;
 
 
-    public SqlStatus addOneGoods(String name, Integer price, String description, Integer expiredDay, Integer operator) {
+    public SqlStatusEnum addOneGoods(AddGoodsRequest addGoodsRequest) {
         Goods goods = new Goods();
-        goods.setName(name);
-        goods.setPrice(price);
-        goods.setDescription(description);
+        goods.setName(addGoodsRequest.getName());
+        goods.setPrice(addGoodsRequest.getPrice());
+        goods.setPicUrl(addGoodsRequest.getPicUrl());
+        goods.setStock(addGoodsRequest.getStock());
+        goods.setDescription(addGoodsRequest.getDescription());
+        goods.setCategory(addGoodsRequest.getCategory());
         goods.setCreateTime(ZonedDateTime.now().toEpochSecond());
-        ZonedDateTime expiredTime = ZonedDateTime.now().plusDays(expiredDay);
+        ZonedDateTime expiredTime = ZonedDateTime.now().plusDays(addGoodsRequest.getExpiredDay());
         goods.setExpireTime(expiredTime.toEpochSecond());
         goods.setDeleteTime(null);
         goods.setValid(1);
-        goods.setOperator(operator);
+        goods.setOperator(addGoodsRequest.getOperator());
         int insert = goodsMapper.insert(goods);
         if (insert > 0) {
-            return SqlStatus.SUCCESS;
+            return SqlStatusEnum.SUCCESS;
         }
-        return SqlStatus.FAILURE;
+        return SqlStatusEnum.FAILURE;
     }
 
 
@@ -58,21 +68,29 @@ public class GoodsService {
         return goods;
     }
 
-    public SqlStatus updateOneGoods(Integer goodsId, UpdateOneGoodsRequest goodsRequest) {
+    @Transactional
+    public SqlStatusEnum updateOneGoods(Integer goodsId, UpdateOneGoodsRequest goodsRequest) {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-        SqlStatus status = goodsHistoryService.addOneGoodsHistory(goods, goodsRequest.getOperator());
-        if (!status.equals(SqlStatus.SUCCESS)) {
-//            throw new
+        if (Objects.isNull(goods)){
+            throw new FailureException(GOODS_UNPRESENCE_ERROR);
         }
+        SqlStatusEnum status = goodsHistoryService.addOneGoodsHistory(goods, goodsRequest.getOperator());
+        if (!status.equals(SqlStatusEnum.SUCCESS)) {
+            throw new FailureException(GOODS_ADD_HISTORY_ERROR);
+        }
+        goods.setName(goodsRequest.getName());
+        goods.setPicUrl(goodsRequest.getPicUrl());
+        goods.setStock(goodsRequest.getStock());
+        goods.setDescription(goodsRequest.getDescription());
+        goods.setCategory(goodsRequest.getCategory());
+        goods.setOperator(goodsRequest.getOperator());
+        goods.setPrice(goodsRequest.getPrice());
         GoodsExample goodsExample = new GoodsExample();
-        goodsExample.or().andNameEqualTo(goodsRequest.getName())
-                .andPriceEqualTo(goodsRequest.getPrice())
-                .andDescriptionEqualTo(goodsRequest.getDescription())
-                .andOperatorEqualTo(goodsRequest.getOperator());
+        goodsExample.or().andIdEqualTo(goodsId);
         int update = goodsMapper.updateByExampleSelective(goods, goodsExample);
-        if (update > 0) {
-            return SqlStatus.SUCCESS;
+        if (update < 1) {
+            throw new FailureException(GOODS_MODIFY_FAILUER_ERROR);
         }
-        return SqlStatus.FAILURE;
+        return SqlStatusEnum.SUCCESS;
     }
 }

@@ -1,4 +1,4 @@
-package com.slw.my_user.model;
+package com.slw.my_user.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

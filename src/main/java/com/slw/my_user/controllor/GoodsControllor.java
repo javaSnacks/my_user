@@ -1,13 +1,14 @@
 package com.slw.my_user.controllor;
 
 import com.slw.my_user.model.Goods;
-import com.slw.my_user.model.enums.SqlStatus;
+import com.slw.my_user.model.enums.SqlStatusEnum;
 import com.slw.my_user.model.request.AddGoodsRequest;
 import com.slw.my_user.model.request.UpdateOneGoodsRequest;
 import com.slw.my_user.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -20,13 +21,8 @@ public class GoodsControllor {
 
     @PostMapping
     public String addOneGoods(@RequestBody AddGoodsRequest addGoodsRequest){
-        SqlStatus status = goodsService.addOneGoods(addGoodsRequest.getName(),
-                addGoodsRequest.getPrice(),
-                addGoodsRequest.getDescription(),
-                addGoodsRequest.getExpiredDay(),
-                addGoodsRequest.getOperator()
-        );
-        if (status.equals(SqlStatus.SUCCESS)){
+        SqlStatusEnum status = goodsService.addOneGoods(addGoodsRequest);
+        if (status.equals(SqlStatusEnum.SUCCESS)){
             return "addGoods success";
         }
         return "addGoods failed";
@@ -43,7 +39,7 @@ public class GoodsControllor {
     }
 
     @PatchMapping("/{id}")
-    public SqlStatus updateOneGoods(@RequestBody UpdateOneGoodsRequest updateOneGoodsRequest, @PathVariable Integer id){
+    public SqlStatusEnum updateOneGoods(@RequestBody @Valid UpdateOneGoodsRequest updateOneGoodsRequest, @PathVariable Integer id){
         return goodsService.updateOneGoods(id, updateOneGoodsRequest);
     }
 

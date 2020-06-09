@@ -54,8 +54,10 @@ create table s_user.t_goods(
        id serial primary key ,
        name varchar(30) not null ,
        price int not null ,
+       pic_url varchar(100) default '',
+       stock int not null default 0,
        description varchar(100) ,
---     category char not null ,
+       category int not null ,
        create_time bigint not null ,
        expire_time bigint not null ,
        delete_time bigint ,
@@ -69,9 +71,13 @@ COMMENT ON COLUMN t_goods.name IS '商品名称';
 
 COMMENT ON COLUMN t_goods.price IS '商品价格';
 
+COMMENT ON COLUMN t_goods.pic_url IS '商品图片地址';
+
+COMMENT ON COLUMN t_goods.stock IS '商品库存';
+
 COMMENT ON COLUMN t_goods.description IS '商品描述信息';
 
--- COMMENT ON COLUMN t_goods.category IS '商品类别';
+COMMENT ON COLUMN t_goods.category IS '商品类别';
 
 COMMENT ON COLUMN t_goods.create_time IS '商品创建时间,精确到秒';
 
@@ -83,17 +89,17 @@ COMMENT ON COLUMN t_goods.valid IS '商品是否在有效期,1表示在有效期
 
 COMMENT ON COLUMN t_goods.operator IS '商品添加操作人';
 
--- CREATE TABLE s_user.t_category(
---     id SERIAL PRIMARY KEY ,
---     category_name INT NOT NULL ,
---     father_category INT NOT NULL
--- );
---
--- COMMENT ON COLUMN t_category.id IS '商品类别id';
---
--- COMMENT ON COLUMN t_category.category_name IS '商品类别，0为所有商品父类';
---
--- COMMENT ON COLUMN t_category.father_category IS '商品类别的父类';
+CREATE TABLE s_user.t_category(
+    id SERIAL PRIMARY KEY ,
+    category_name INT NOT NULL ,
+    father_category INT NOT NULL
+);
+
+COMMENT ON COLUMN t_category.id IS '商品类别id';
+
+COMMENT ON COLUMN t_category.category_name IS '商品类别，0为所有商品父类';
+
+COMMENT ON COLUMN t_category.father_category IS '商品类别的父类';
 
 
 
@@ -102,8 +108,10 @@ create table s_user.t_goods_history(
        goods_id int not null ,
        name varchar(30) not null ,
        price int not null ,
+       pic_url varchar(100) default '',
+       stock int not null default 0,
        description varchar(100) ,
---     category char not null ,
+       category int not null ,
        create_time bigint not null ,
        expire_time bigint not null ,
        delete_time bigint ,
@@ -120,9 +128,13 @@ COMMENT ON COLUMN t_goods_history.name IS '商品名称';
 
 COMMENT ON COLUMN t_goods_history.price IS '商品价格';
 
+COMMENT ON COLUMN t_goods_history.pic_url IS '商品图片地址';
+
+COMMENT ON COLUMN t_goods_history.stock IS '商品库存';
+
 COMMENT ON COLUMN t_goods_history.description IS '商品描述信息';
 
--- COMMENT ON COLUMN t_goods.category IS '商品类别';
+COMMENT ON COLUMN t_goods_history.category IS '商品类别';
 
 COMMENT ON COLUMN t_goods_history.create_time IS '商品创建时间,精确到秒';
 
